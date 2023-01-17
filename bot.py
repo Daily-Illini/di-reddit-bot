@@ -26,11 +26,19 @@ submission_title = f"Recent dailyillini.com Stories - {todays_date}"
 submission_text = "Greetings, I am a robot created by [The Daily Illini](https://dailyillini.com) to serve your eyeholes with the latest and greatest student journalism. Here's the latest campus news you may have missed:\n\n\n\n"
 
 # format and append 5 stories to submission body
-for entry in NewsFeed.entries[0::6]:
-    story_title = entry["title"]
-    story_link = entry["link"]
+used_tags = []
+counter = 0
+for entry in NewsFeed.entries:
     story_tag = entry["tags"][0]["term"]
-    submission_text += f"{story_tag} - [{story_title}]({story_link})\n\n"
+    if story_tag not in used_tags:
+        story_title = entry["title"]
+        story_link = entry["link"]
+        used_tags.append(story_tag)
+        submission_text += f"{story_tag} - [{story_title}]({story_link})\n\n"
+        used_tags.append(story_tag)
+        counter += 1
+    if counter == 5:
+        break
 
 submission_text += "\n\n^(This post was made by a bot. If you want to learn more, join our team or just complain, email us at online@dailyillini.com)"
 
